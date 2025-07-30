@@ -17,23 +17,74 @@ NC='\033[0m'
 echo -e "${PURPLE}🌱 Agentic Seed System Starting...${NC}"
 echo ""
 
-# Verificar si existe PRD
-if [ -f "PRD.md" ] || [ -f "prd.md" ] || [ -f "requirements.md" ]; then
-    echo -e "${BLUE}📄 PRD detected - Analysis phase${NC}"
-    echo "Execute commands in order:"
-    echo -e "${YELLOW}1. /analyze${NC}              # Extract and structure requirements"
-    echo -e "${YELLOW}2. /decide-stack${NC}          # Choose optimal technology stack" 
-    echo -e "${YELLOW}3. /design-arch${NC}           # Design system architecture"
-    echo -e "${YELLOW}4. /plan-dev${NC}              # Create development roadmap"
-    echo -e "${YELLOW}5. /setup-project${NC}         # Initialize project (ONLY after all analysis)"
-    echo ""
-else
-    echo -e "${RED}⚠️ No PRD found${NC}"
-    echo "To use this seed system:"
-    echo "1. Add your PRD.md to project root"
-    echo "2. Restart Claude Code to trigger analysis"
-    echo ""
-fi
+# Detectar tipo de proyecto
+detect_project_type() {
+    # Nuevo proyecto con PRD
+    if [ -f "PRD.md" ] || [ -f "prd.md" ] || [ -f "requirements.md" ]; then
+        if [ -f "package.json" ] || [ -f "composer.json" ] || [ -f "manage.py" ]; then
+            echo "hybrid-project"  # PRD + código existente
+        else
+            echo "new-project"     # Solo PRD
+        fi
+    # Proyecto existente sin PRD
+    elif [ -f "package.json" ] || [ -f "composer.json" ] || [ -f "manage.py" ] || [ -f "requirements.txt" ]; then
+        echo "existing-project"
+    else
+        echo "unknown"
+    fi
+}
+
+PROJECT_TYPE=$(detect_project_type)
+
+case $PROJECT_TYPE in
+    "new-project")
+        echo -e "${BLUE}📄 PRD detected - Analysis phase${NC}"
+        echo "Execute commands in order:"
+        echo -e "${YELLOW}1. /analyze${NC}              # Extract and structure requirements"
+        echo -e "${YELLOW}2. /decide-stack${NC}          # Choose optimal technology stack" 
+        echo -e "${YELLOW}3. /design-arch${NC}           # Design system architecture"
+        echo -e "${YELLOW}4. /plan-dev${NC}              # Create development roadmap"
+        echo -e "${YELLOW}5. /setup-project${NC}         # Initialize project (ONLY after all analysis)"
+        echo ""
+        ;;
+        
+    "existing-project")
+        echo -e "${PURPLE}🔧 Existing project detected - Rescue mode${NC}"
+        echo -e "${BLUE}Available rescue options:${NC}"
+        echo -e "${YELLOW}/rescue-project${NC}           # Analyze existing code and create improvement plan"
+        echo ""
+        echo -e "${BLUE}💡 Tip: Use /rescue-project to:${NC}"
+        echo "  • Document current architecture"
+        echo "  • Identify technical debt"
+        echo "  • Create improvement roadmap"
+        echo "  • Generate missing documentation"
+        echo ""
+        ;;
+        
+    "hybrid-project")
+        echo -e "${PURPLE}🔄 Hybrid project detected - PRD + existing code${NC}"
+        echo -e "${BLUE}Choose your approach:${NC}"
+        echo -e "${YELLOW}/rescue-project${NC}           # Analyze existing code first"
+        echo -e "${YELLOW}/analyze${NC}                  # Start with PRD analysis"
+        echo ""
+        echo -e "${BLUE}💡 Recommended: Start with /rescue-project to understand current state${NC}"
+        echo ""
+        ;;
+        
+    *)
+        echo -e "${RED}⚠️ No PRD or code detected${NC}"
+        echo -e "${BLUE}To use this seed system:${NC}"
+        echo -e "${YELLOW}For new projects:${NC}"
+        echo "1. Add your PRD.md to project root"
+        echo "2. Restart Claude Code to trigger analysis"
+        echo ""
+        echo -e "${YELLOW}For existing projects:${NC}"
+        echo "1. Navigate to your project directory"
+        echo "2. Run Claude Code"
+        echo "3. Use /rescue-project command"
+        echo ""
+        ;;
+esac
 
 # Verificar análisis previo
 if [ -d ".output" ] && [ "$(ls -A .output 2>/dev/null)" ]; then
