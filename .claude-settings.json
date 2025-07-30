@@ -3,7 +3,7 @@
     "SessionStart": [{
       "hooks": [{
         "type": "command",
-        "command": "bash .hooks/session-start-context.sh"
+        "command": "bash .seed/automation/on-session-start.sh"
       }]
     }],
     "PreToolUse": [
@@ -11,7 +11,7 @@
         "matcher": "Write|MultiEdit",
         "hooks": [{
           "type": "command",
-          "command": "bash .hooks/pre-write-validation.sh"
+          "command": "bash .seed/automation/before-code-write.sh"
         }]
       }
     ],
@@ -20,7 +20,7 @@
         "matcher": "Write|MultiEdit", 
         "hooks": [{
           "type": "command",
-          "command": "bash .hooks/post-code-test.sh"
+          "command": "bash .seed/automation/after-code-change.sh"
         }]
       }
     ],
@@ -28,13 +28,20 @@
       "matcher": "commit|push",
       "hooks": [{
         "type": "command",
-        "command": "bash .hooks/pre-commit-check.sh"
+        "command": "bash .seed/automation/before-commit.sh"
       }]
     }]
   },
   "preferences": {
     "defaultLanguage": "español",
     "analysisMode": true,
-    "planningFirst": true
+    "planningFirst": true,
+    "stackOptimization": true
+  },
+  "agentic": {
+    "version": "2.0",
+    "supportedStacks": ["laravel", "nextjs", "react", "python"],
+    "outputVersioning": true,
+    "autoStackDetection": true
   }
 }
