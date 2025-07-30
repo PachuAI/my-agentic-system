@@ -1,0 +1,40 @@
+{
+  "hooks": {
+    "SessionStart": [{
+      "hooks": [{
+        "type": "command",
+        "command": "bash .hooks/session-start-context.sh"
+      }]
+    }],
+    "PreToolUse": [
+      {
+        "matcher": "Write|MultiEdit",
+        "hooks": [{
+          "type": "command",
+          "command": "bash .hooks/pre-write-validation.sh"
+        }]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Write|MultiEdit", 
+        "hooks": [{
+          "type": "command",
+          "command": "bash .hooks/post-code-test.sh"
+        }]
+      }
+    ],
+    "UserPromptSubmit": [{
+      "matcher": "commit|push",
+      "hooks": [{
+        "type": "command",
+        "command": "bash .hooks/pre-commit-check.sh"
+      }]
+    }]
+  },
+  "preferences": {
+    "defaultLanguage": "español",
+    "analysisMode": true,
+    "planningFirst": true
+  }
+}
