@@ -1,6 +1,6 @@
 # 🌱 Agentic Seed - Sistema de Análisis y Planificación Pre-Desarrollo
 
-Sistema semilla para inicializar proyectos con Claude Code, diseñado para analizar PRDs y crear planes de acción sólidos ANTES de escribir código.
+Sistema semilla para inicializar proyectos con Agentic Coding, diseñado para analizar PRDs y crear planes de acción sólidos ANTES de escribir código.
 
 ## 🎯 Objetivo
 
